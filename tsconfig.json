@@ -19,7 +19,7 @@
   ],
   "compileOnSave": false,
   "angularCompilerOptions": {
-    "genDir": "jit",
+    "genDir": "aot",
     "skipMetadataEmit": true
   }
 }

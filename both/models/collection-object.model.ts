@@ -1,3 +1,3 @@
 export interface CollectionObject {
-  _id: number;
+  _id: string;
 }
