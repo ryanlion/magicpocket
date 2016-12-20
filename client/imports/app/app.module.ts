@@ -4,8 +4,10 @@ import { AppComponent } from "./app.component";
 import { DemoComponent } from "./demo/demo.component";
 import { DemoDataService } from "./demo/demo-data.service";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { routes } from './app.routes';
 import { RouterModule } from '@angular/router';
+import { routes, ROUTES_PROVIDERS } from './app.routes';
+import { AccountsModule } from 'angular2-meteor-accounts-ui';
+
  
 import { PARTIES_DECLARATIONS } from './parties';
 
@@ -22,14 +24,16 @@ import { PARTIES_DECLARATIONS } from './parties';
   ],
   // Providers
   providers: [
-    DemoDataService
+      DemoDataService,
+      ...ROUTES_PROVIDERS
   ],
   // Modules
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+      BrowserModule,
+      FormsModule,
+      ReactiveFormsModule,
+      RouterModule.forRoot(routes),
+      AccountsModule
   ],
   // Main Component
   bootstrap: [ AppComponent ]
