@@ -30,6 +30,10 @@ export class PartiesListComponent implements OnInit, OnDestroy {
     Parties.remove(party._id);
   }
 
+  search(value: string): void {
+    this.parties = Parties.find(value ? { location: value } : {}).zone();
+  }
+
   ngOnDestroy() {
     this.partiesSub.unsubscribe();
   }

@@ -9,6 +9,7 @@ import template from './party-details.component.html';
 import { Parties } from '../../../../both/collections/parties.collection';
 import { Party } from '../../../../both/models/party.model';
 import { Meteor } from 'meteor/meteor';
+import { MeteorObservable } from 'meteor-rxjs';
 
 @Component({
   selector: 'party-details',
@@ -18,6 +19,8 @@ export class PartyDetailsComponent implements OnInit {
   partyId: string;
   paramsSub: Subscription;
   party: Party;
+  partySub: Subscription;
+
  
   constructor(
     private route: ActivatedRoute

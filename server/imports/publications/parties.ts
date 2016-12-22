@@ -2,6 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Parties } from '../../../both/collections/parties.collection';
 
 Meteor.publish('parties', function() {
+  return Parties.find(buildQuery.call(this));
+});
+ 
+Meteor.publish('party', function(partyId: string) {
+  return Parties.find(buildQuery.call(this, partyId));
+});
+
+function buildQuery(partyId?: string): Object {
   const selector = {
     $or: [{
       // party is public
@@ -19,6 +27,15 @@ Meteor.publish('parties', function() {
       }]
     }]
   };
- 
-  return Parties.find(selector);
-});
+  if (partyId) {
+    return {
+      // only single party
+      $and: [{
+          _id: partyId
+        },
+        selector
+      ]
+    };
+  } 
+  return selector;
+}
