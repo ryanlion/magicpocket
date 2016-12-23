@@ -1,45 +1,35 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { AppComponent } from "./app.component";
-import { DemoComponent } from "./demo/demo.component";
-import { DemoDataService } from "./demo/demo-data.service";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { AccountsModule } from 'angular2-meteor-accounts-ui';
+import { Ng2PaginationModule } from 'ng2-pagination';
 
- 
+import { AppComponent } from './app.component';
+import { routes, ROUTES_PROVIDERS } from './app.routes';
 import { PARTIES_DECLARATIONS } from './parties';
+import { SHARED_DECLARATIONS } from './shared';
 
 @NgModule({
-  // Components, Pipes, Directive
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(routes),
+    AccountsModule,
+    Ng2PaginationModule
+  ],
   declarations: [
     AppComponent,
-    DemoComponent,
-    ...PARTIES_DECLARATIONS
+    ...PARTIES_DECLARATIONS,
+    ...PARTIES_DECLARATIONS,
+    ...SHARED_DECLARATIONS
   ],
-  // Entry Components
-  entryComponents: [
-    AppComponent
-  ],
-  // Providers
   providers: [
-      DemoDataService,
-      ...ROUTES_PROVIDERS
+    ...ROUTES_PROVIDERS
   ],
-  // Modules
-  imports: [
-      BrowserModule,
-      FormsModule,
-      ReactiveFormsModule,
-      RouterModule.forRoot(routes),
-      AccountsModule
-  ],
-  // Main Component
-  bootstrap: [ AppComponent ]
+  bootstrap: [
+    AppComponent
+  ]
 })
-export class AppModule {
-  constructor() {
-
-  }
-}
+export class AppModule {}
