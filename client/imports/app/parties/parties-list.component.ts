@@ -11,6 +11,7 @@ import 'rxjs/add/operator/combineLatest';
 
 import { Parties } from '../../../../both/collections/parties.collection';
 import { Party } from '../../../../both/models/party.model';
+import style from './parties-list.component.scss';
 
 import template from './parties-list.component.html';
 
@@ -25,7 +26,8 @@ interface Options extends Pagination {
 
 @Component({
   selector: 'parties-list',
-  template
+  template,
+  styles: [ style ]
 })
 @InjectUser('user')
 export class PartiesListComponent implements OnInit, OnDestroy {
@@ -39,12 +41,14 @@ export class PartiesListComponent implements OnInit, OnDestroy {
   autorunSub: Subscription;
   location: Subject<string> = new Subject<string>();
   user: Meteor.User;
+  imagesSubs: Subscription;
 
   constructor(
     private paginationService: PaginationService
   ) {}
 
   ngOnInit() {
+    this.imagesSubs = MeteorObservable.subscribe('images').subscribe();
     this.optionsSub = Observable.combineLatest(
       this.pageSize,
       this.curPage,
@@ -115,5 +119,6 @@ export class PartiesListComponent implements OnInit, OnDestroy {
     this.partiesSub.unsubscribe();
     this.optionsSub.unsubscribe();
     this.autorunSub.unsubscribe();
+    this.imagesSubs.unsubscribe();
   }
 }

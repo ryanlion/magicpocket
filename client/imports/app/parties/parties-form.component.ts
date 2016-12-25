@@ -3,25 +3,34 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Meteor } from 'meteor/meteor';
 
 import { Parties } from '../../../../both/collections/parties.collection';
+import style from './parties-form.component.scss';
 
 import template from './parties-form.component.html';
 
 @Component({
   selector: 'parties-form',
-  template
+  template,
+  styles: [ style ]
 })
 export class PartiesFormComponent implements OnInit {
   addForm: FormGroup;
+  newPartyPosition: {lat:number, lng: number} = {lat: 37.4292, lng: -122.1381};
+  images: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder
   ) {}
+
+  mapClicked($event) {
+    this.newPartyPosition = $event.coords;
+  }
 
   ngOnInit() {
     this.addForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: [],
       location: ['', Validators.required],
+      images: this.images,
       public: [false]
     });
   }
@@ -33,9 +42,23 @@ export class PartiesFormComponent implements OnInit {
     }
 
     if (this.addForm.valid) {
-      Parties.insert(Object.assign({}, this.addForm.value, { owner: Meteor.userId() }));
+      Parties.insert({
+        name: this.addForm.value.name,
+        description: this.addForm.value.description,
+        location: {
+          name: this.addForm.value.location,
+          lat: this.newPartyPosition.lat,
+          lng: this.newPartyPosition.lng
+        },
+        public: this.addForm.value.public,
+        owner: Meteor.userId()
+      });
 
       this.addForm.reset();
     }
+  }
+
+  onImage(imageId: string) {
+    this.images.push(imageId);
   }
 }

@@ -1,6 +1,7 @@
 /// <reference types="zone.js" />
 /// <reference types="meteor-typings" />
 /// <reference types="@types/underscore" />
+/// <reference types="@types/node" />
 
 declare module '*.html' {
   const template: string;
@@ -25,6 +26,18 @@ declare module '*.css' {
 declare module '*.sass' {
   const style: string;
   export default style;
+}
+
+declare module "meteor/jalik:ufs" {
+  interface Uploader {
+    start: () => void;
+  }
+
+  interface UploadFS {
+    Uploader: (options: any) => Uploader;
+  }
+
+  export var UploadFS;
 }
 
 declare module 'meteor/tmeasday:publish-counts' {
