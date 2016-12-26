@@ -1,0 +1,16 @@
+.party-details-container {
+  display: table; }
+  .party-details-container .row {
+    display: table-row;
+    width: 100%; }
+    .party-details-container .row .party-details, .party-details-container .row .party-invites, .party-details-container .row .party-map {
+      display: table-cell;
+      width: 33.3%;
+      vertical-align: top; }
+      .party-details-container .row .party-details md-card, .party-details-container .row .party-invites md-card, .party-details-container .row .party-map md-card {
+        margin: 20px; }
+    .party-details-container .row .party-map sebm-google-map {
+      height: 300px;
+      width: 100%; }
+
+/*# sourceMappingURL=party-details.component.css.map */

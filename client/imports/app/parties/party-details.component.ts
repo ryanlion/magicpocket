@@ -5,14 +5,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { InjectUser } from "angular2-meteor-accounts-ui";
-import { Users } from '../../../../both/collections/users.collection';
-import { User } from '../../../../both/models/user.model';
 import { MouseEvent } from "angular2-google-maps/core";
 
 import 'rxjs/add/operator/map';
 
 import { Parties } from '../../../../both/collections/parties.collection';
 import { Party } from '../../../../both/models/party.model';
+import { Users } from '../../../../both/collections/users.collection';
+import { User } from '../../../../both/models/user.model';
 
 import template from './party-details.component.html';
 import style from './party-details.component.scss';
@@ -31,25 +31,13 @@ export class PartyDetailsComponent implements OnInit, OnDestroy {
   users: Observable<User>;
   uninvitedSub: Subscription;
   user: Meteor.User;
+  // Default center Palo Alto coordinates.
   centerLat: number = 37.4292;
   centerLng: number = -122.1381;
 
   constructor(
     private route: ActivatedRoute
   ) {}
-
-  get lat(): number {
-    return this.party && this.party.location.lat;
-  }
-
-  get lng(): number {
-    return this.party && this.party.location.lng;
-  }
-
-  mapClicked($event: MouseEvent) {
-    this.party.location.lat = $event.coords.lat;
-    this.party.location.lng = $event.coords.lng;
-  }
 
   ngOnInit() {
     this.paramsSub = this.route.params
@@ -62,27 +50,20 @@ export class PartyDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.partySub = MeteorObservable.subscribe('party', this.partyId).subscribe(() => {
-          this.party = Parties.findOne(this.partyId);
-          this.getUsers(this.party);
+          MeteorObservable.autorun().subscribe(() => {
+            this.party = Parties.findOne(this.partyId);
+            this.getUsers(this.party);
+          });
         });
-        
+
         if (this.uninvitedSub) {
           this.uninvitedSub.unsubscribe();
         }
- 
+
         this.uninvitedSub = MeteorObservable.subscribe('uninvited', this.partyId).subscribe(() => {
-           this.getUsers(this.party);
-           /*this.users = Users.find({
-             _id: {
-               $ne: Meteor.userId()
-              }
-            }).zone();*/
+          this.getUsers(this.party);
         });
       });
-  }
-
-  get isOwner(): boolean {
-    return this.party && this.user && this.user._id === this.party.owner;
   }
 
   getUsers(party: Party) {
@@ -112,20 +93,6 @@ export class PartyDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  get isPublic(): boolean {
-    return this.party && this.party.public;
-  }
- 
-  get isInvited(): boolean {
-    if (this.party && this.user) {
-      const invited = this.party.invited || [];
- 
-      return invited.indexOf(this.user._id) !== -1;
-    }
- 
-    return false;
-  }
-
   invite(user: Meteor.User) {
     MeteorObservable.call('invite', this.party._id, user._id).subscribe(() => {
       alert('User successfully invited.');
@@ -140,6 +107,38 @@ export class PartyDetailsComponent implements OnInit, OnDestroy {
     }, (error) => {
       alert(`Failed to reply due to ${error}`);
     });
+  }
+
+  get isOwner(): boolean {
+    return this.party && this.user && this.user._id === this.party.owner;
+  }
+
+  get isPublic(): boolean {
+    return this.party && this.party.public;
+  }
+
+  get isInvited(): boolean {
+    if (this.party && this.user) {
+      const invited = this.party.invited || [];
+
+      return invited.indexOf(this.user._id) !== -1;
+    }
+
+    return false;
+  }
+
+
+  get lat(): number {
+    return this.party && this.party.location.lat;
+  }
+
+  get lng(): number {
+    return this.party && this.party.location.lng;
+  }
+
+  mapClicked($event: MouseEvent) {
+    this.party.location.lat = $event.coords.lat;
+    this.party.location.lng = $event.coords.lng;
   }
 
   ngOnDestroy() {

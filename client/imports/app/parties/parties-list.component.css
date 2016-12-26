@@ -1,0 +1,51 @@
+.parties-list-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 auto;
+  width: 100%;
+  display: table; }
+  .parties-list-container .parties-list {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top; }
+    .parties-list-container .parties-list .pagination {
+      display: inline;
+      text-align: center; }
+    .parties-list-container .parties-list .filter-card {
+      margin: 20px; }
+    .parties-list-container .parties-list .party-card {
+      margin: 20px;
+      position: relative; }
+      .parties-list-container .parties-list .party-card img.party-main-image {
+        max-width: 100%;
+        max-height: 100%; }
+      .parties-list-container .parties-list .party-card .party-name > a {
+        color: black;
+        text-decoration: none; }
+      .parties-list-container .parties-list .party-card .remove-party {
+        position: absolute;
+        top: 10px;
+        right: 10px; }
+      .parties-list-container .parties-list .party-card .rsvp-container {
+        position: absolute;
+        bottom: 10px;
+        right: 10px; }
+        .parties-list-container .parties-list .party-card .rsvp-container .rsvps-sum {
+          display: inline-block;
+          width: 50px;
+          text-align: center; }
+          .parties-list-container .parties-list .party-card .rsvp-container .rsvps-sum .rsvps-amount {
+            font-size: 24px; }
+          .parties-list-container .parties-list .party-card .rsvp-container .rsvps-sum .rsvps-title {
+            font-size: 13px;
+            color: #aaa; }
+  .parties-list-container .parties-map {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top; }
+    .parties-list-container .parties-map .google-map {
+      width: 100%;
+      min-height: 600px; }
+
+/*# sourceMappingURL=parties-list.component.css.map */

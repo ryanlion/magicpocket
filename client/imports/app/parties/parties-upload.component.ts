@@ -2,76 +2,75 @@ import {Component, OnInit, EventEmitter, Output} from '@angular/core';
 
 import template from './parties-upload.component.html';
 import style from './parties-upload.component.scss';
+
 import { upload } from '../../../../both/methods/images.methods';
-import {MeteorObservable} from "meteor-rxjs";
 import {Subject, Subscription, Observable} from "rxjs";
+import {MeteorObservable} from "meteor-rxjs";
 import {Thumb} from "../../../../both/models/image.model";
 import {Thumbs} from "../../../../both/collections/images.collection";
 
 @Component({
-    selector: 'parties-upload',
-    template,
-    styles: [ style ]
+  selector: 'parties-upload',
+  template,
+  styles: [ style ]
 })
 export class PartiesUploadComponent implements OnInit {
-    fileIsOver: boolean = false;
-    uploading: boolean = false;
-    filesArray: string[] = [];
-    files: Subject<string[]> = new Subject<string[]>();
-    thumbsSubscription: Subscription;
-    thumbs: Observable<Thumb[]>;
-    @Output() onFile: EventEmitter<string> = new EventEmitter<string>();
+  fileIsOver: boolean = false;
+  uploading: boolean = false;
+  filesArray: string[] = [];
+  files: Subject<string[]> = new Subject<string[]>();
+  thumbsSubscription: Subscription;
+  thumbs: Observable<Thumb[]>;
+  @Output() onFile: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor() {}
+  constructor() {}
 
-    fileOver(fileIsOver: boolean): void {
-        this.fileIsOver = fileIsOver;
-    }
+  ngOnInit() {
+    this.files.subscribe((filesArray) => {
+      MeteorObservable.autorun().subscribe(() => {
+        if (this.thumbsSubscription) {
+          this.thumbsSubscription.unsubscribe();
+          this.thumbsSubscription = undefined;
+        }
 
-    ngOnInit() {
-        this.files.subscribe((filesArray) => {
-            MeteorObservable.autorun().subscribe(() => {
-                if (this.thumbsSubscription) {
-                    this.thumbsSubscription.unsubscribe();
-                    this.thumbsSubscription = undefined;
-                }
-
-                this.thumbsSubscription = MeteorObservable.subscribe("thumbs", filesArray).subscribe(() => {
-                    this.thumbs = Thumbs.find({
-                        originalStore: 'images',
-                        originalId: {
-                            $in: filesArray
-                        }
-                    }).zone();
-                });
-
-                //this.thumbsSubscription = MeteorObservable.subscribe("thumbs", filesArray).subscribe();
-            });
+        this.thumbsSubscription = MeteorObservable.subscribe("thumbs", filesArray).subscribe(() => {
+          this.thumbs = Thumbs.find({
+            originalStore: 'images',
+            originalId: {
+              $in: filesArray
+            }
+          }).zone();
         });
-    }
+      });
+    });
+  }
 
-    onFileDrop(file: File): void {
-        this.uploading = true;
+  fileOver(fileIsOver: boolean): void {
+    this.fileIsOver = fileIsOver;
+  }
 
-        upload(file)
-            .then((result) => {
-                this.uploading = false;
-                this.addFile(result);
-            })
-            .catch((error) => {
-                this.uploading = false;
-                console.log(`Something went wrong!`, error);
-            });
-    }
+  onFileDrop(file: File): void {
+    this.uploading = true;
 
-    addFile(file) {
-        this.filesArray.push(file._id);
-        this.files.next(this.filesArray);
-        this.onFile.emit(file._id);
-    }
+    upload(file)
+      .then((result) => {
+        this.uploading = false;
+        this.addFile(result);
+      })
+      .catch((error) => {
+        this.uploading = false;
+        console.log(`Something went wrong!`, error);
+      });
+  }
 
-    reset() {
-        this.filesArray = [];
-        this.files.next(this.filesArray);
-    }
+  addFile(file) {
+    this.filesArray.push(file._id);
+    this.files.next(this.filesArray);
+    this.onFile.emit(file._id);
+  }
+
+  reset() {
+    this.filesArray = [];
+    this.files.next(this.filesArray);
+  }
 }

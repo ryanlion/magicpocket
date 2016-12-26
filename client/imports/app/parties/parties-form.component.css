@@ -1,0 +1,41 @@
+.form-container {
+  position: relative;
+  display: inline-block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-grow: 1;
+  z-index: 1;
+  width: 100%;
+  color: white; }
+  .form-container .container-background {
+    background: linear-gradient(#00796b, #009688);
+    color: #fff; }
+    .form-container .container-background .form-content {
+      background: #0277bd;
+      width: 100%;
+      padding: 0 !important;
+      align-items: center;
+      display: flex;
+      flex-flow: row wrap;
+      margin: 0 auto; }
+      .form-container .container-background .form-content form {
+        width: 100%;
+        display: table; }
+      .form-container .container-background .form-content .form-inputs {
+        display: table-cell;
+        width: 60%;
+        vertical-align: top;
+        text-align: center;
+        margin-top: 20px; }
+      .form-container .container-background .form-content .form-extras {
+        display: table-cell;
+        width: 40%;
+        vertical-align: top; }
+        .form-container .container-background .form-content .form-extras .new-party-map {
+          width: 100% !important;
+          height: 300px !important; }
+      .form-container .container-background .form-content .form-center {
+        width: 50%;
+        text-align: center; }
+
+/*# sourceMappingURL=parties-form.component.css.map */

@@ -28,18 +28,6 @@ declare module '*.sass' {
   export default style;
 }
 
-declare module "meteor/jalik:ufs" {
-  interface Uploader {
-    start: () => void;
-  }
-
-  interface UploadFS {
-    Uploader: (options: any) => Uploader;
-  }
-
-  export var UploadFS;
-}
-
 declare module 'meteor/tmeasday:publish-counts' {
   import { Mongo } from 'meteor/mongo';
 
@@ -49,4 +37,11 @@ declare module 'meteor/tmeasday:publish-counts' {
   }
 
   export const Counts: CountsObject;
+}
+
+declare module 'meteor/accounts-base' {
+  module Accounts {
+    function requestPhoneVerification(phoneNumber: string, callback?: Function): void;
+    function verifyPhone(phoneNumber: string, code: string, callback?: Function): void;
+  }
 }
