@@ -1,3 +1,3 @@
-export class Base {
+export interface Base {
   _id?: string;
 }
