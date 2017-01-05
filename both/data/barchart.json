@@ -1,5 +1,7 @@
 {
     "url": "http://marketdata.websol.barchart.com/getHistory.json?",
     "key": "db1cf917d8b8547742f179bf472285db",
-    "url_mapping": {}
+    "url_mapping": {
+        "Stock": 
+    }
 }

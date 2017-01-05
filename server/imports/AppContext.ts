@@ -1,5 +1,5 @@
 export class AppContext{
-    context:Map ;
+    context:any ;
     constructor(){
         var fs = Npm.require('fs');
         fs.readFile(process.env.PWD + '/both/data/barchart.json', 'utf8', function (err, data) {
