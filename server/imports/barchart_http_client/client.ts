@@ -2,9 +2,9 @@ import { HTTP } from 'meteor/http';
 import {AppContext} from '../AppContext';
 import {Stock} from "../../../both/models/stock.model";
 
-export class Client {
+export class BarChartClient {
     constructor(){}
-    call_barchart(Stock: stock):any{
+    call_barchart(stock: Stock):any{
         let appContext:AppContext = new AppContext();
         debugger
         HTTP.call("GET", appContext.context[""],
